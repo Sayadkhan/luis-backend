@@ -9,6 +9,9 @@ export const UserSchema = new Schema<TUser>({
   password: { type: String, required: true },
   role: { type: String, required: true },
   status: { type: String, enum: ["blocked", "active"], default: "active" },
+  verificationCode: { type: String },
+  verificationCodeExpires: { type: Date },
+  pendingEmail: { type: String },
 });
 
 UserSchema.pre("save", async function (next) {

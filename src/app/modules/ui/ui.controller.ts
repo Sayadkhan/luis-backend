@@ -6,6 +6,8 @@ import { UiServices } from "./ui.service";
 const createUiData = catchAsync(async (req, res) => {
   const result = await UiServices.createUiDataIntoDB(req.body);
 
+  console.log(result);
+
   sendResponse(res, {
     success: true,
     statusCode: status.OK,

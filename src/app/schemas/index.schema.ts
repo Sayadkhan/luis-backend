@@ -8,8 +8,8 @@ export const NameSchema = new Schema<TName>({
 });
 
 export const ImageSchema = new Schema<TImage>({
-  url: { type: String, required: true },
-  publicId: { type: String, required: true },
+  url: { type: String },
+  publicId: { type: String },
 });
 
 

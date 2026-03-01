@@ -102,10 +102,9 @@ const changePassword = async (
   payload: {
     oldPassword: string;
     newPassword: string;
-    confirmNewPassword: string;
   }
 ) => {
-  const isUserExists = await UserModel.findOne({ id: user.id }).select(
+  const isUserExists = await UserModel.findOne({ email: user.email }).select(
     "+password"
   );
 
@@ -131,9 +130,6 @@ const changePassword = async (
   if (!isPasswordMatched) {
     throw new AppError(status.UNAUTHORIZED, "Wrong old password");
   }
-  if (payload.newPassword !== payload.confirmNewPassword) {
-    throw new AppError(status.UNAUTHORIZED, "New password does not match");
-  }
 
   const newHashedPassword = await bcrypt.hash(
     payload.newPassword,
@@ -142,12 +138,10 @@ const changePassword = async (
 
   await UserModel.findOneAndUpdate(
     {
-      id: user.id,
-      role: user.role,
+      email: user.email,
     },
     {
       password: newHashedPassword,
-      needsPasswordChanged: false,
       passwordChangedAt: new Date(),
     }
   );

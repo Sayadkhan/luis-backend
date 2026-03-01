@@ -7,6 +7,9 @@ export type TUser = {
   status: "blocked" | "active";
   passwordChangedAt?: Date;
   role: "client" | "admin";
+  verificationCode?: string;
+  verificationCodeExpires?: Date;
+  pendingEmail?: string;
 };
 
 export type TUserRole = keyof typeof USER_ROLE;

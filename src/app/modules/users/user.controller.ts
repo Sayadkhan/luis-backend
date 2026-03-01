@@ -20,4 +20,26 @@ const getMe = catchAsync(async (req, res) => {
   });
 });
 
-export const UserController = { getMe };
+const requestEmailChange = catchAsync(async (req, res) => {
+  const result = await UserServices.requestEmailChange(req.user, req.body.newEmail);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: status.OK,
+    message: "Verification code sent to your new email",
+    data: result,
+  });
+});
+
+const verifyEmailChange = catchAsync(async (req, res) => {
+  const result = await UserServices.verifyEmailChange(req.user, req.body.code);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: status.OK,
+    message: "Email updated successfully",
+    data: result,
+  });
+});
+
+export const UserController = { getMe, requestEmailChange, verifyEmailChange };

@@ -5,6 +5,7 @@ export type TUi = {
   bannerImage: TImage;
   whatsapp: string;
   email: string;
+  address: string;
   travelPhoto: TImage;
   explorePhoto: TImage;
 };

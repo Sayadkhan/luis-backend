@@ -2,7 +2,7 @@ import status from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import { AuthServices } from "./auth.service";
 import { sendResponse } from "../../utils/sendResponse";
-// import config from "../../config";
+import config from "../../config";
 
 const signUp = catchAsync(async (req, res) => {
   const result = await AuthServices.signUp(req.body);
@@ -21,9 +21,9 @@ const loginUser = catchAsync(async (req, res) => {
 
   res.cookie("refreshToken", refreshToken, {
     path: "/",
-    httpOnly: false,
-    secure: true, // production HTTPS
-    sameSite: "none",
+    httpOnly: true,
+    secure: config.node_env === "production",
+    sameSite: "strict",
   });
   sendResponse(res, {
     success: true,
@@ -37,9 +37,9 @@ const loginUser = catchAsync(async (req, res) => {
 const logoutUser = catchAsync(async (req, res) => {
   res.clearCookie("refreshToken", {
     path: "/",
-    httpOnly: false,
-    secure: true, // production HTTPS
-    sameSite: "none",
+    httpOnly: true,
+    secure: config.node_env === "production",
+    sameSite: "strict",
   });
   sendResponse(res, {
     success: true,
