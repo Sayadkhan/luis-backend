@@ -2,7 +2,8 @@ import catchAsync from "../../utils/catchAsync";
 import httpStatus from "http-status";
 import { sendResponse } from "../../utils/sendResponse";
 import { BlogServices } from "./blog.service";
-import AppError from "../../errors/AppError";
+import { AppError } from "../../errors/AppError";
+
 
 const createBlog = catchAsync(async (req, res) => {
   const result = await BlogServices.createBlogIntoDB(req.body);

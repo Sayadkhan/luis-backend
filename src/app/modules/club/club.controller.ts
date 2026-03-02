@@ -2,7 +2,7 @@ import catchAsync from "../../utils/catchAsync";
 import status from "http-status";
 import { sendResponse } from "../../utils/sendResponse";
 import { ClubServices } from "./club.service";
-import AppError from "../../errors/AppError";
+import {AppError} from "../../errors/AppError";
 
 const createClub = catchAsync(async (req, res) => {
   const result = await ClubServices.createClubIntoDB(req.body);
