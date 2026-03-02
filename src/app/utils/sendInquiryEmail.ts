@@ -124,11 +124,109 @@ export const sendInquiryEmail = async (data: InquiryEmailData) => {
     </html>
   `;
 
-  await transporter.sendMail({
+    const userHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body style="margin:0;padding:0;background:#f4f4f5;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f5;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+          
+          <!-- HEADER -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:40px 48px;text-align:center;">
+              <p style="margin:0 0 4px 0;color:#C6AC5E;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;">
+                Endless Vacations Hub
+              </p>
+              <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:300;letter-spacing:1px;">
+                Thank You for Your Request
+              </h1>
+            </td>
+          </tr>
+
+          <!-- BADGE -->
+          <tr>
+            <td style="padding:24px 48px 0;">
+              <div style="display:inline-block;background:#DCFCE7;border:1px solid #16A34A;border-radius:100px;padding:6px 16px;">
+                <span style="color:#166534;font-size:12px;font-weight:700;letter-spacing:1px;">
+                  REQUEST RECEIVED
+                </span>
+              </div>
+            </td>
+          </tr>
+
+          <!-- CONTENT -->
+          <tr>
+            <td style="padding:24px 48px 40px;">
+              
+              <p style="margin:0 0 16px 0;color:#1e293b;font-size:16px;font-weight:500;">
+                Dear ${displayName},
+              </p>
+
+              <p style="margin:0 0 18px 0;color:#334155;font-size:15px;line-height:1.7;">
+                Thank you for contacting <strong>Endless Vacations Hub</strong>. 
+                We have successfully received your request and our team is currently reviewing it.
+              </p>
+
+              <div style="background:#f8fafc;border-left:4px solid #C6AC5E;border-radius:0 8px 8px 0;padding:18px 22px;margin:24px 0;">
+                <p style="margin:0;color:#334155;font-size:15px;line-height:1.7;">
+                  Our team will get back to you shortly with further details. 
+                  If your request requires immediate attention, feel free to reply to this email.
+                </p>
+              </div>
+
+              <div style="margin-top:32px;text-align:center;">
+                <a href="mailto:${config.admin_email}" 
+                   style="display:inline-block;background:#C6AC5E;color:#1a1a2e;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;padding:14px 36px;border-radius:8px;">
+                   Contact Support
+                </a>
+              </div>
+
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:20px 48px;text-align:center;">
+              <p style="margin:0;color:#94a3b8;font-size:12px;">
+                This is an automated confirmation email from Endless Vacations Hub.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+`;
+
+  /* ---------------- MAIL CONFIGS ---------------- */
+
+  const adminConfig = {
     from: `"Endless Vacations Hub" <${config.admin_email}>`,
     to: config.admin_email,
     replyTo: data.email,
     subject: subjectLine,
-    html,
-  });
+    html: html,
+  };
+
+  const userConfig = {
+    from: `"Endless Vacations Hub" <${config.admin_email}>`,
+    to: data.email,
+    subject: "Thank You for Contacting Endless Vacations Hub",
+    html: userHtml,
+  };
+
+    await Promise.all([
+    transporter.sendMail(adminConfig),
+    transporter.sendMail(userConfig),
+  ]);
+
 };
