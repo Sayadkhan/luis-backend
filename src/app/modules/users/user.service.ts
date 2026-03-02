@@ -6,6 +6,7 @@ import { verifyToken } from "../auth/auth.utils";
 import { ClientModel } from "../client/client.model";
 import { UserModel } from "./user.model";
 import { SendEmail } from "../../utils/sendEmail";
+import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 
 const getMe = async (token: string) => {
@@ -24,11 +25,22 @@ const getMe = async (token: string) => {
   return result;
 };
 
-const requestEmailChange = async (user: JwtPayload, newEmail: string) => {
+const requestEmailChange = async (user: JwtPayload, newEmail: string,   currentPassword: string) => {
+
+  
   const isUserExists = await UserModel.findOne({ email: user.email });
 
   if (!isUserExists) {
     throw new AppError(status.NOT_FOUND, "User not found");
+  }
+
+    const isPasswordMatched = await bcrypt.compare(
+    currentPassword,
+    isUserExists.password
+  );
+
+  if (!isPasswordMatched) {
+    throw new AppError(status.UNAUTHORIZED, "Incorrect password");
   }
 
   const isEmailTaken = await UserModel.findOne({ email: newEmail });

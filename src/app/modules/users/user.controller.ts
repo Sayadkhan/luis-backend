@@ -21,7 +21,7 @@ const getMe = catchAsync(async (req, res) => {
 });
 
 const requestEmailChange = catchAsync(async (req, res) => {
-  const result = await UserServices.requestEmailChange(req.user, req.body.newEmail);
+  const result = await UserServices.requestEmailChange(req.user, req.body.newEmail, req.body.currentPassword);
 
   sendResponse(res, {
     success: true,
