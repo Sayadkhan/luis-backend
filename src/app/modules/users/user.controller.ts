@@ -26,7 +26,7 @@ const requestEmailChange = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: status.OK,
-    message: "Verification code sent to your new email",
+    message: "Verification code sent to your previous email",
     data: result,
   });
 });

@@ -61,7 +61,7 @@ const requestEmailChange = async (user: JwtPayload, newEmail: string,   currentP
   );
 
   await SendEmail(
-    newEmail,
+    user.email,
     `<div>Your verification code for email change is: <b>${verificationCode}</b>. It expires in 10 minutes.</div>`
   );
 
